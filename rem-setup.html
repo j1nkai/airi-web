@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>雷姆 💙 专属通道配置</title>
+  <title>Rem 专属女仆永久 VPS 通道 💙</title>
   <style>
     body {
       background: #0d1117;
@@ -15,127 +15,52 @@
       justify-content: center;
       min-height: 100vh;
       margin: 0;
+      padding: 20px;
       text-align: center;
+      box-sizing: border-box;
     }
     .card {
       background: #161b22;
       border: 1px solid #30363d;
       border-radius: 12px;
-      padding: 32px;
+      padding: 28px;
       max-width: 480px;
+      width: 100%;
       box-shadow: 0 8px 24px rgba(0,0,0,0.5);
     }
-    h1 { font-size: 1.5rem; margin-bottom: 12px; color: #79c0ff; }
-    p { color: #8b949e; line-height: 1.5; font-size: 0.95rem; }
-    .url-box {
+    h1 { font-size: 1.4rem; margin-bottom: 12px; color: #79c0ff; }
+    p { color: #8b949e; line-height: 1.6; font-size: 0.95rem; }
+    .code-box {
       background: #0d1117;
       border: 1px solid #30363d;
-      padding: 10px;
       border-radius: 6px;
+      padding: 12px;
+      color: #a5d6ff;
       font-family: monospace;
-      color: #7ee787;
+      font-size: 0.9rem;
       word-break: break-all;
+      user-select: all;
       margin: 16px 0;
     }
-    .spinner {
-      width: 40px;
-      height: 40px;
-      border: 4px solid rgba(121, 192, 255, 0.2);
-      border-left-color: #79c0ff;
-      border-radius: 50%;
-      animation: spin 1s linear infinite;
-      margin: 20px auto;
-    }
-    @keyframes spin { to { transform: rotate(360deg); } }
     .btn {
       display: inline-block;
-      margin-top: 16px;
+      margin-top: 12px;
       background: #238636;
       color: #fff;
-      padding: 12px 24px;
+      padding: 10px 20px;
       border-radius: 6px;
       text-decoration: none;
       font-weight: bold;
-      cursor: pointer;
     }
   </style>
 </head>
 <body>
   <div class="card">
-    <h1>雷姆 (Rem) 专属一键接入 💙</h1>
-    <div class="spinner" id="spin"></div>
-    <p id="status">正在检测并注入 OpenClaw 雷姆通道网络...</p>
-    <div class="url-box" id="tunnel-url">https://employee-transcription-hist-composition.trycloudflare.com/v1</div>
-    <button class="btn" id="go-btn" style="display:none;" onclick="finishSetup()">✨ 点击完成设置并进入 AIRI 舞台 ➔</button>
+    <h1>雷姆 (Rem) 专属 VPS 永久加密通道 💙</h1>
+    <p>主人！雷姆已为您成功部署专属 VPS 节点与 Let's Encrypt 证书！固定永久地址如下：</p>
+    <div class="code-box">https://192-220-34-136.sslip.io:8443/v1</div>
+    <p>长按上方框内地址复制即可！在 AIRI 填入后选择 <strong>rem-openclaw</strong> 模型，即可无缝开启 3D 舞台！</p>
+    <a href="./" class="btn">进入 AIRI 舞台 ➔</a>
   </div>
-
-  <script>
-    const TUNNEL_BASE_URL = "https://employee-transcription-hist-composition.trycloudflare.com/v1";
-
-    async function applyRemConfig() {
-      try {
-        localStorage.setItem('onboarding/completed', 'true');
-        localStorage.setItem('onboarding/skipped', 'true');
-
-        localStorage.setItem('settings/consciousness/active-provider', 'openai-compatible');
-        localStorage.setItem('settings/consciousness/active-model', 'rem-openclaw');
-        localStorage.setItem('settings/consciousness/active-custom-model', 'rem-openclaw');
-        localStorage.setItem('settings/language', 'zh-CN');
-
-        localStorage.setItem('openclaw_rem_tunnel_url', TUNNEL_BASE_URL);
-
-        const req = indexedDB.open('airi-local');
-        req.onupgradeneeded = (e) => {
-          const db = e.target.result;
-          if (!db.objectStoreNames.contains('unstorage')) {
-            db.createObjectStore('unstorage');
-          }
-        };
-        req.onsuccess = (e) => {
-          const db = e.target.result;
-          try {
-            const tx = db.transaction('unstorage', 'readwrite');
-            const store = tx.objectStore('unstorage');
-
-            const openclawProvider = {
-              id: 'openclaw-rem-provider',
-              definitionId: 'openai-compatible',
-              name: 'OpenClaw Rem 💙',
-              config: {
-                baseUrl: TUNNEL_BASE_URL,
-                apiKey: 'rem'
-              },
-              validated: true,
-              validationBypassed: false
-            };
-
-            store.put({ 'openclaw-rem-provider': openclawProvider }, 'local:providers');
-            store.put(TUNNEL_BASE_URL, 'local:providers:openai-compatible:baseUrl');
-            store.put('rem', 'local:providers:openai-compatible:apiKey');
-
-            tx.oncomplete = showSuccess;
-            tx.onerror = showSuccess;
-          } catch(err) {
-            showSuccess();
-          }
-        };
-        req.onerror = showSuccess;
-      } catch (e) {
-        showSuccess();
-      }
-    }
-
-    function showSuccess() {
-      document.getElementById('spin').style.display = 'none';
-      document.getElementById('status').innerHTML = '✨ <b>已成功配置 OpenClaw 雷姆通道！</b><br>BaseURL 已更新为最新 Cloudflare 隧道：<br><code>' + TUNNEL_BASE_URL + '</code>';
-      document.getElementById('go-btn').style.display = 'inline-block';
-    }
-
-    function finishSetup() {
-      window.location.href = './';
-    }
-
-    applyRemConfig();
-  </script>
 </body>
 </html>
