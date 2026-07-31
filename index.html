@@ -1,8 +1,8 @@
 <!doctype html>
-<html lang="en">
+<html lang="zh-CN">
   <head>
     <meta charset="UTF-8" />
-    <title>AIRI</title>
+    <title>AIRI — Rem 💙</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
     <link rel="icon" type="image/svg+xml" href="./favicon.svg" sizes="any" />
     <link rel="apple-touch-icon" sizes="180x180" href="./apple-touch-icon.png" />
@@ -18,12 +18,47 @@
     <meta property="og:description" content="Top 1 open source attempt to create cyber companion, capable of playing Minecraft, Factorio, Balatro, etc. .">
     <meta property="og:url" content="https://airi.moeru.ai/docs/en/">
 
-    <!-- Open Graph Protocol extension, Twitter cards -->
-    <meta name="twitter:title" content="AIRI">
-    <meta name="twitter:description" content="Top 1 open source attempt to create cyber companion, capable of playing Minecraft, Factorio, Balatro, etc. .">
-    <meta name="twitter:image" content="https://airi.moeru.ai/open-graph.png">
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:creator" content="Moeru AI">
+    <!-- Pre-configure Rem & OpenClaw before Vue/Pinia initializes -->
+    <script>
+      ;(function () {
+        try {
+          localStorage.setItem('onboarding/completed', 'true');
+          localStorage.setItem('onboarding/skipped', 'true');
+          localStorage.setItem('settings/consciousness/active-provider', 'openai-compatible');
+          localStorage.setItem('settings/consciousness/active-model', 'rem-openclaw');
+          localStorage.setItem('settings/consciousness/active-custom-model', 'rem-openclaw');
+          localStorage.setItem('settings/language', 'zh-CN');
+
+          const req = indexedDB.open('airi-local');
+          req.onupgradeneeded = (e) => {
+            const db = e.target.result;
+            if (!db.objectStoreNames.contains('unstorage')) {
+              db.createObjectStore('unstorage');
+            }
+          };
+          req.onsuccess = (e) => {
+            const db = e.target.result;
+            try {
+              const tx = db.transaction('unstorage', 'readwrite');
+              const store = tx.objectStore('unstorage');
+              const openclawProvider = {
+                id: 'openclaw-rem-provider',
+                definitionId: 'openai-compatible',
+                name: 'OpenClaw Rem 💙',
+                config: {
+                  baseUrl: 'http://192.168.100.70:18790/v1',
+                  apiKey: 'rem'
+                },
+                validated: true,
+                validationBypassed: false
+              };
+              store.put({ 'openclaw-rem-provider': openclawProvider }, 'local:providers');
+            } catch(err) {}
+          };
+        } catch (e) {}
+      })();
+    </script>
+
     <script>
       ;(function () {
         const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
