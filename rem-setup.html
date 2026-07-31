@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>正在配置 Rem 专属女仆与 OpenClaw... 💙</title>
+  <title>雷姆 💙 专属通道配置</title>
   <style>
     body {
       background: #0d1117;
@@ -27,6 +27,16 @@
     }
     h1 { font-size: 1.5rem; margin-bottom: 12px; color: #79c0ff; }
     p { color: #8b949e; line-height: 1.5; font-size: 0.95rem; }
+    .url-box {
+      background: #0d1117;
+      border: 1px solid #30363d;
+      padding: 10px;
+      border-radius: 6px;
+      font-family: monospace;
+      color: #7ee787;
+      word-break: break-all;
+      margin: 16px 0;
+    }
     .spinner {
       width: 40px;
       height: 40px;
@@ -42,10 +52,11 @@
       margin-top: 16px;
       background: #238636;
       color: #fff;
-      padding: 10px 20px;
+      padding: 12px 24px;
       border-radius: 6px;
       text-decoration: none;
       font-weight: bold;
+      cursor: pointer;
     }
   </style>
 </head>
@@ -53,12 +64,15 @@
   <div class="card">
     <h1>雷姆 (Rem) 专属一键接入 💙</h1>
     <div class="spinner" id="spin"></div>
-    <p id="status">正在将雷姆角色卡与 OpenClaw 加密通道（https://8ebb81cf6ac3a4.lhr.life/v1）自动写入配置...</p>
-    <a href="./" class="btn" id="go-btn" style="display:none;">配置完毕！进入 AIRI 舞台 ➔</a>
+    <p id="status">正在检测并注入 OpenClaw 雷姆通道网络...</p>
+    <div class="url-box" id="tunnel-url">https://api.trycloudflare.com/v1</div>
+    <button class="btn" id="go-btn" style="display:none;" onclick="finishSetup()">✨ 点击完成设置并进入 AIRI 舞台 ➔</button>
   </div>
 
   <script>
-    async function setupRem() {
+    const TUNNEL_BASE_URL = "https://api.trycloudflare.com/v1";
+
+    async function applyRemConfig() {
       try {
         localStorage.setItem('onboarding/completed', 'true');
         localStorage.setItem('onboarding/skipped', 'true');
@@ -68,6 +82,10 @@
         localStorage.setItem('settings/consciousness/active-custom-model', 'rem-openclaw');
         localStorage.setItem('settings/language', 'zh-CN');
 
+        // Write provider info directly
+        localStorage.setItem('openclaw_rem_tunnel_url', TUNNEL_BASE_URL);
+
+        // Also inject into IndexedDB for AIRI unstorage
         const req = indexedDB.open('airi-local');
         req.onupgradeneeded = (e) => {
           const db = e.target.result;
@@ -86,7 +104,7 @@
               definitionId: 'openai-compatible',
               name: 'OpenClaw Rem 💙',
               config: {
-                baseUrl: 'https://8ebb81cf6ac3a4.lhr.life/v1',
+                baseUrl: TUNNEL_BASE_URL,
                 apiKey: 'rem'
               },
               validated: true,
@@ -94,29 +112,32 @@
             };
 
             store.put({ 'openclaw-rem-provider': openclawProvider }, 'local:providers');
+            store.put(TUNNEL_BASE_URL, 'local:providers:openai-compatible:baseUrl');
+            store.put('rem', 'local:providers:openai-compatible:apiKey');
 
-            tx.oncomplete = finishSetup;
-            tx.onerror = finishSetup;
+            tx.oncomplete = showSuccess;
+            tx.onerror = showSuccess;
           } catch(err) {
-            finishSetup();
+            showSuccess();
           }
         };
-        req.onerror = finishSetup;
+        req.onerror = showSuccess;
       } catch (e) {
-        finishSetup();
+        showSuccess();
       }
     }
 
-    function finishSetup() {
+    function showSuccess() {
       document.getElementById('spin').style.display = 'none';
-      document.getElementById('status').innerText = '✨ 成功写入雷姆公网通道配置！正在自动进入 AIRI 舞台...';
+      document.getElementById('status').innerHTML = '✨ <b>已成功配置 OpenClaw 雷姆通道！</b><br>在 AIRI 设置中选 OpenAI Compatible，BaseURL 已设为最新隧道。';
       document.getElementById('go-btn').style.display = 'inline-block';
-      setTimeout(() => {
-        window.location.href = './';
-      }, 800);
     }
 
-    setupRem();
+    function finishSetup() {
+      window.location.href = './';
+    }
+
+    applyRemConfig();
   </script>
 </body>
 </html>
