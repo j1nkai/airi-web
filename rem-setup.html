@@ -60,11 +60,17 @@
   <script>
     async function setupRem() {
       try {
+        // Mark onboarding completed and skipped so welcome screen never blocks
+        localStorage.setItem('onboarding/completed', 'true');
+        localStorage.setItem('onboarding/skipped', 'true');
+
+        // Set active provider & model
         localStorage.setItem('settings/consciousness/active-provider', 'openai-compatible');
         localStorage.setItem('settings/consciousness/active-model', 'rem-openclaw');
         localStorage.setItem('settings/consciousness/active-custom-model', 'rem-openclaw');
         localStorage.setItem('settings/language', 'zh-CN');
 
+        // Write unstorage IndexedDB for provider settings
         const req = indexedDB.open('airi-local');
         req.onupgradeneeded = (e) => {
           const db = e.target.result;
@@ -106,11 +112,11 @@
 
     function finishSetup() {
       document.getElementById('spin').style.display = 'none';
-      document.getElementById('status').innerText = '✨ 自动配置已完成！正在自动跳转至 AIRI 舞台...';
+      document.getElementById('status').innerText = '✨ 自动跳过引导 & 成功写入配置！正在自动跳转至 AIRI 舞台...';
       document.getElementById('go-btn').style.display = 'inline-block';
       setTimeout(() => {
         window.location.href = './';
-      }, 1200);
+      }, 1000);
     }
 
     setupRem();
