@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>AIRI</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" sizes="any" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <meta name="description" content="Open source attempt to create cyber companion.">
+    <meta name="apple-mobile-web-app-title" content="AIRI" />
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="theme-color" content="rgb(18,18,18)" id="themeColor" />
+
+    <!-- Open Graph Protocol -->
+    <meta property="og:title" content="AIRI">
+    <meta property="og:site_name" content="AIRI">
+    <meta property="og:image" content="https://airi.moeru.ai/open-graph.png">
+    <meta property="og:description" content="Top 1 open source attempt to create cyber companion, capable of playing Minecraft, Factorio, Balatro, etc. .">
+    <meta property="og:url" content="https://airi.moeru.ai/docs/en/">
+
+    <!-- Open Graph Protocol extension, Twitter cards -->
+    <meta name="twitter:title" content="AIRI">
+    <meta name="twitter:description" content="Top 1 open source attempt to create cyber companion, capable of playing Minecraft, Factorio, Balatro, etc. .">
+    <meta name="twitter:image" content="https://airi.moeru.ai/open-graph.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:creator" content="Moeru AI">
+    <script>
+      ;(function () {
+        const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
+        const setting = localStorage.getItem('vueuse-color-scheme') || 'auto'
+        if (setting === 'light' || (prefersDark && setting !== 'dark'))
+          document.querySelector('#themeColor')?.setAttribute('content', 'rgb(255,255,255)')
+      })()
+    </script>
+    <script>
+      ;(function () {
+        const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
+        const setting = localStorage.getItem('vueuse-color-scheme') || 'auto'
+        if (setting === 'dark' || (prefersDark && setting !== 'light'))
+          document.documentElement.classList.toggle('dark', true)
+      })()
+    </script>
+    <!-- Privacy-friendly analytics by Plausible -->
+    <script async src="https://moeru-ai-airi-helper.kwaa.workers.dev/remote-assets/page-external-data/js/script.js"></script>
+    <script>
+      window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};
+      plausible.init({
+        endpoint: "https://moeru-ai-airi-helper.kwaa.workers.dev/api/v1/page-external-data/submit"
+      })
+    </script>
+    <script src="/assets/js/CubismSdkForWeb-5-r.3/Core/live2dcubismcore.min.js"></script>
+    <script type="module" crossorigin src="/assets/index-CaK1ypgH.js"></script>
+    <link rel="modulepreload" crossorigin href="/assets/_plugin-vue_export-helper-BPRVag0c.js">
+    <link rel="modulepreload" crossorigin href="/assets/chunk-DseTPa7n.js">
+    <link rel="modulepreload" crossorigin href="/assets/preload-helper-ClBMtM1g.js">
+    <link rel="modulepreload" crossorigin href="/assets/vue.runtime.esm-bundler-Dq8_DP2J.js">
+    <link rel="modulepreload" crossorigin href="/assets/dist-Tnc2uZ04.js">
+    <link rel="modulepreload" crossorigin href="/assets/src-BmsZhKte.js">
+    <link rel="modulepreload" crossorigin href="/assets/dist-D9szsUyJ.js">
+    <link rel="modulepreload" crossorigin href="/assets/pinia-Ri5ra0zN.js">
+    <link rel="modulepreload" crossorigin href="/assets/dist-C0WcEIsX.js">
+    <link rel="modulepreload" crossorigin href="/assets/src-CBLxSTpt.js">
+    <link rel="modulepreload" crossorigin href="/assets/storage-BGR65uV3.js">
+    <link rel="modulepreload" crossorigin href="/assets/index.browser-BIqKBH_3.js">
+    <link rel="modulepreload" crossorigin href="/assets/stream-transcription-CGsCTeCJ.js">
+    <link rel="modulepreload" crossorigin href="/assets/vue-i18n.runtime-Ck6SgWIQ.js">
+    <link rel="modulepreload" crossorigin href="/assets/coordinator-DCGkBrH0.js">
+    <link rel="modulepreload" crossorigin href="/assets/dist-1BIfEigh.js">
+    <link rel="modulepreload" crossorigin href="/assets/index-DoHiaFQM-qxzj-o05.js">
+    <link rel="modulepreload" crossorigin href="/assets/core-CtjKl_op.js">
+    <link rel="modulepreload" crossorigin href="/assets/artistry-DchrebTf.js">
+    <link rel="modulepreload" crossorigin href="/assets/websocket-inspector-zg3wFgTy.js">
+    <link rel="modulepreload" crossorigin href="/assets/use-analytics-CPcWWzNf.js">
+    <link rel="modulepreload" crossorigin href="/assets/devtools-lag-DD3-bUMb.js">
+    <link rel="modulepreload" crossorigin href="/assets/use-io-tracer-Xdy7FKx3.js">
+    <link rel="modulepreload" crossorigin href="/assets/__vite-browser-external-dKiEd3fs.js">
+    <link rel="modulepreload" crossorigin href="/assets/output-BRbehvtZ.js">
+    <link rel="modulepreload" crossorigin href="/assets/process.worklet-gIhZAdME.js">
+    <link rel="modulepreload" crossorigin href="/assets/audio-6g4e7FqL.js">
+    <link rel="modulepreload" crossorigin href="/assets/settings-Dk9Luoh_.js">
+    <link rel="modulepreload" crossorigin href="/assets/sleep-C6ci4Tdh.js">
+    <link rel="modulepreload" crossorigin href="/assets/composables-wriGGyK4.js">
+    <link rel="modulepreload" crossorigin href="/assets/lib-iyBoQloP.js">
+    <link rel="modulepreload" crossorigin href="/assets/background-jswgs8R0.js">
+    <link rel="modulepreload" crossorigin href="/assets/chat-DVaq7reU.js">
+    <link rel="modulepreload" crossorigin href="/assets/dist-D97NJS6d.js">
+    <link rel="modulepreload" crossorigin href="/assets/clamp-iYb7hR5L.js">
+    <link rel="modulepreload" crossorigin href="/assets/three.module-BM_D-Qw1.js">
+    <link rel="modulepreload" crossorigin href="/assets/tres-C3bx-F5O.js">
+    <link rel="modulepreload" crossorigin href="/assets/DialogTitle-ealwVpj4.js">
+    <link rel="modulepreload" crossorigin href="/assets/vue-router-CxcU0D79.js">
+    <link rel="modulepreload" crossorigin href="/assets/widgets-T2lPr-_g.js">
+    <link rel="modulepreload" crossorigin href="/assets/animation-MDRqJKNK.js">
+    <link rel="modulepreload" crossorigin href="/assets/browser-DIrRvybA.js">
+    <link rel="modulepreload" crossorigin href="/assets/tts-session-SdAg8uoS.js">
+    <link rel="modulepreload" crossorigin href="/assets/libs-Cz9AwnGG.js">
+    <link rel="modulepreload" crossorigin href="/assets/vue-BCFJTvh_.js">
+    <link rel="modulepreload" crossorigin href="/assets/auth-CSJuZXXk.js">
+    <link rel="modulepreload" crossorigin href="/assets/constants-D-FT8tMK.js">
+    <link rel="modulepreload" crossorigin href="/assets/twitter-BXuF85dK.js">
+    <link rel="modulepreload" crossorigin href="/assets/onboarding-Bc1mGJy2.js">
+    <link rel="modulepreload" crossorigin href="/assets/basic-input-file-_lMIClnK.js">
+    <link rel="modulepreload" crossorigin href="/assets/components-BnAH21zK.js">
+    <link rel="modulepreload" crossorigin href="/assets/HeaderLink-D-gQKYjq.js">
+    <link rel="modulepreload" crossorigin href="/assets/dist-DcfsmPW3.js">
+    <link rel="modulepreload" crossorigin href="/assets/speech-runtime-CQzkQr_a.js">
+    <link rel="modulepreload" crossorigin href="/assets/constants-Ctfc5lAs.js">
+    <link rel="modulepreload" crossorigin href="/assets/llm-streaming-control-DSwkKgKB.js">
+    <link rel="stylesheet" crossorigin href="/assets/src-BCEvmCrc.css">
+    <link rel="stylesheet" crossorigin href="/assets/widgets-DCtfiu-N.css">
+    <link rel="stylesheet" crossorigin href="/assets/components-qdr4TP70.css">
+    <link rel="stylesheet" crossorigin href="/assets/HeaderLink-CgR8yqLo.css">
+    <link rel="stylesheet" crossorigin href="/assets/index-BElsMMyG.css">
+  <link rel="manifest" href="/manifest.webmanifest"></head>
+  <body class="font-sans">
+    <div id="app"></div>
+    <noscript> This website requires JavaScript to function properly. Please enable JavaScript to continue. </noscript>
+  </body>
+</html>

@@ -1,0 +1,1 @@
+import{t as e}from"./live2d-preview-CRzOBSvg.js";export{e as loadLive2DModelPreview};

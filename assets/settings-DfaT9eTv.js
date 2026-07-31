@@ -1,0 +1,2 @@
+import{T as e,X as t}from"./vue.runtime.esm-bundler-Dq8_DP2J.js";import{t as n}from"./_plugin-vue_export-helper-BPRVag0c.js";var r={};function i(n,r){return t(),e(`div`,null,` Settings `)}var a=n(r,[[`render`,i]]);export{a as default};
+//# sourceMappingURL=settings-DfaT9eTv.js.map

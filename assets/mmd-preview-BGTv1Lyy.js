@@ -1,0 +1,1 @@
+import{t as e}from"./mmd-preview-B2yJS3z5.js";export{e as loadMMDModelPreview};
