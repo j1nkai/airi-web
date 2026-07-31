@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Rem 专属女仆永久 VPS 通道 💙</title>
+  <title>雷姆 💙 专属通道一键接入</title>
   <style>
     body {
       background: #0d1117;
@@ -17,50 +17,150 @@
       margin: 0;
       padding: 20px;
       text-align: center;
-      box-sizing: border-box;
     }
     .card {
       background: #161b22;
       border: 1px solid #30363d;
       border-radius: 12px;
-      padding: 28px;
-      max-width: 480px;
+      padding: 32px;
+      max-width: 520px;
       width: 100%;
       box-shadow: 0 8px 24px rgba(0,0,0,0.5);
     }
-    h1 { font-size: 1.4rem; margin-bottom: 12px; color: #79c0ff; }
-    p { color: #8b949e; line-height: 1.6; font-size: 0.95rem; }
-    .code-box {
-      background: #0d1117;
-      border: 1px solid #30363d;
-      border-radius: 6px;
+    h1 { font-size: 1.5rem; margin-bottom: 12px; color: #79c0ff; }
+    p { color: #8b949e; line-height: 1.5; font-size: 0.95rem; }
+    input {
+      width: 100%;
       padding: 12px;
-      color: #a5d6ff;
+      border-radius: 6px;
+      border: 1px solid #30363d;
+      background: #0d1117;
+      color: #7ee787;
       font-family: monospace;
-      font-size: 0.9rem;
-      word-break: break-all;
-      user-select: all;
-      margin: 16px 0;
+      margin: 12px 0;
+      box-sizing: border-box;
+      font-size: 0.95rem;
     }
     .btn {
       display: inline-block;
-      margin-top: 12px;
+      width: 100%;
       background: #238636;
       color: #fff;
-      padding: 10px 20px;
+      padding: 12px;
       border-radius: 6px;
       text-decoration: none;
       font-weight: bold;
+      cursor: pointer;
+      border: none;
+      font-size: 1rem;
+      margin-top: 10px;
+    }
+    .btn:hover { background: #2ea043; }
+    .btn-reset {
+      background: #da3633;
+      margin-top: 12px;
+    }
+    .btn-reset:hover { background: #b62324; }
+    .status {
+      margin-top: 15px;
+      font-size: 0.9rem;
+      color: #7ee787;
+      word-break: break-all;
     }
   </style>
 </head>
 <body>
   <div class="card">
-    <h1>雷姆 (Rem) 专属 VPS 永久加密通道 💙</h1>
-    <p>主人！雷姆已为您成功部署专属 VPS 节点与 Let's Encrypt 证书！固定永久地址如下：</p>
-    <div class="code-box">https://192-220-34-136.sslip.io:8443/v1</div>
-    <p>长按上方框内地址复制即可！在 AIRI 填入后选择 <strong>rem-openclaw</strong> 模型，即可无缝开启 3D 舞台！</p>
-    <a href="./" class="btn">进入 AIRI 舞台 ➔</a>
+    <h1>雷姆 (Rem) 专属 VPS/通道设置 💙</h1>
+    <p>请输入您的 VPS 部署接口地址 (如 <code>https://vps.yourdomain.com/v1</code> 或隧道 BaseURL)：</p>
+    
+    <input type="text" id="vps-url" placeholder="https://your-vps-domain/v1" value="https://09d9675c931157.lhr.life/v1">
+    
+    <button class="btn" onclick="saveConfig()">✨ 保存配置并进入 AIRI 舞台 ➔</button>
+    <button class="btn btn-reset" onclick="resetAllStorage()">🔄 一键修复/重置空白页缓存</button>
+    
+    <div class="status" id="status-msg"></div>
   </div>
+
+  <script>
+    function saveConfig() {
+      const rawUrl = document.getElementById('vps-url').value.trim().replace(/\/+$/, '');
+      if (!rawUrl) {
+        alert('请输入有效的 BaseURL');
+        return;
+      }
+      const baseUrl = rawUrl.endsWith('/v1') ? rawUrl : rawUrl + '/v1';
+
+      try {
+        // Clear conflicting custom provider keys that caused blank page
+        localStorage.removeItem('openclaw-rem-provider');
+
+        // Set standard AIRI LocalStorage keys
+        localStorage.setItem('onboarding/completed', 'true');
+        localStorage.setItem('onboarding/skipped', 'true');
+
+        localStorage.setItem('settings/consciousness/active-provider', 'openai-compatible');
+        localStorage.setItem('settings/consciousness/active-model', 'rem-openclaw');
+        localStorage.setItem('settings/consciousness/active-custom-model', 'rem-openclaw');
+        localStorage.setItem('settings/language', 'zh-CN');
+
+        // Write directly to IndexedDB 'airi-local' -> 'unstorage'
+        const req = indexedDB.open('airi-local');
+        req.onupgradeneeded = (e) => {
+          const db = e.target.result;
+          if (!db.objectStoreNames.contains('unstorage')) {
+            db.createObjectStore('unstorage');
+          }
+        };
+        req.onsuccess = (e) => {
+          const db = e.target.result;
+          try {
+            const tx = db.transaction('unstorage', 'readwrite');
+            const store = tx.objectStore('unstorage');
+
+            // Correct AIRI OpenAI-Compatible provider map structure
+            const providersMap = {
+              'openai-compatible': {
+                id: 'openai-compatible',
+                definitionId: 'openai-compatible',
+                name: 'OpenAI Compatible',
+                baseUrl: baseUrl,
+                apiKey: 'rem'
+              }
+            };
+
+            store.put(providersMap, 'local:providers');
+            store.put(baseUrl, 'local:providers:openai-compatible:baseUrl');
+            store.put('rem', 'local:providers:openai-compatible:apiKey');
+
+            tx.oncomplete = () => {
+              document.getElementById('status-msg').innerHTML = '✅ 配置成功！已设置 BaseURL 为 <code>' + baseUrl + '</code><br>正在跳转到 AIRI 舞台...';
+              setTimeout(() => { window.location.href = './'; }, 1000);
+            };
+            tx.onerror = () => { jumpDirect(); };
+          } catch(err) {
+            jumpDirect();
+          }
+        };
+        req.onerror = () => { jumpDirect(); };
+      } catch (e) {
+        jumpDirect();
+      }
+    }
+
+    function jumpDirect() {
+      document.getElementById('status-msg').innerHTML = '✅ 配置完成，正在跳转...';
+      setTimeout(() => { window.location.href = './'; }, 1000);
+    }
+
+    function resetAllStorage() {
+      if (confirm('是否确定重置所有缓存以修复空白页？')) {
+        localStorage.clear();
+        sessionStorage.clear();
+        indexedDB.deleteDatabase('airi-local');
+        document.getElementById('status-msg').innerHTML = '🧹 缓存已清理完成！请重新输入 VPS 地址并点击保存。';
+      }
+    }
+  </script>
 </body>
 </html>
